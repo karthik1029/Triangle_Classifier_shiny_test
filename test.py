@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# Test case categories
+# test case
 functional_tests = [
     {"input": "3 3 3", "expected_output": "Equilateral"},
     {"input": "5 5 3", "expected_output": "Isosceles"},
@@ -32,13 +32,13 @@ corner_cases = [
     {"input": "-1 -1", "expected_output": "Error: Triangles can't have negative sides"},
 ]
 
-# Path to ChromeDriver
+# path to chromedriver
+#downlad from https://googlechromelabs.github.io/chrome-for-testing/#stable
 chrome_driver_path = "/Users/karthik1029/Downloads/chromedriver-mac-arm64/chromedriver"
 
 service = Service(chrome_driver_path)
 driver = webdriver.Chrome(service=service)
 
-# Function to run tests and count passes/fails
 def run_tests(test_cases, category_name):
     total_tests = len(test_cases)
     passed_tests = 0
@@ -81,11 +81,10 @@ def run_tests(test_cases, category_name):
     return total_tests, passed_tests
 
 try:
-    # Open the Triangle Classifier web app
-    url = "http://127.0.0.1:8000"  # Replace with your app's URL
+    # open the shiny app
+    url = "http://127.0.0.1:8000"
     driver.get(url)
 
-    # Run each category of tests and gather results
     total_tests = 0
     total_passed = 0
 
@@ -97,7 +96,7 @@ try:
         total_tests += cat_total
         total_passed += cat_passed
 
-    # Overall results
+    # pass ratio
     overall_pass_ratio = total_passed / total_tests * 100
     print(f"Overall Test Summary:")
     print(f"Total Test Cases: {total_tests}")

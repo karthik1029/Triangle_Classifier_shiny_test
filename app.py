@@ -54,7 +54,6 @@ def server(input, output, session):
         if len(words) == 0:
             return ""
 
-        # Check for negative sides including -1
         if any(word.startswith('-') and word[1:].isdigit() for word in words):
             return "Error: Triangles can't have negative sides"
 
@@ -66,7 +65,6 @@ def server(input, output, session):
             elif len(words) > 3:
                 return "Error: Too many sides provided"
 
-        # Check for non-numeric values
         if not all(word.isdigit() or (word.startswith('-') and word[1:].isdigit()) for word in words):
             return "Error: Non-numeric value encountered"
 
