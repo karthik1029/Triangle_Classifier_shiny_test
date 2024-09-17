@@ -47,16 +47,22 @@ def server(input, output, session):
         input_str = input.input_string().strip()
 
         if input_str.lower().startswith(("exit", "quit")):
-            return ""  # No error when exiting
+            return ""
 
         words = input_str.split()
 
         if len(words) == 0:
             return ""
 
+        # non numeric input check
+        if not all(word.isdigit() or (word.startswith('-') and word[1:].isdigit()) for word in words):
+            return "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."
+
+        # checking negative sides
         if any(word.startswith('-') and word[1:].isdigit() for word in words):
             return "Error: Triangles can't have negative sides"
 
+        # check for incorrect number of sides
         if len(words) != 3:
             if len(words) == 2:
                 return "Error: One side missing"
@@ -65,11 +71,7 @@ def server(input, output, session):
             elif len(words) > 3:
                 return "Error: Too many sides provided"
 
-        if not all(word.isdigit() or (word.startswith('-') and word[1:].isdigit()) for word in words):
-            return "Error: Non-numeric value encountered"
-
         return ""
-
 
 app = App(app_ui, server)
 
