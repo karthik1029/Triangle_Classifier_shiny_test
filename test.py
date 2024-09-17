@@ -13,11 +13,13 @@ functional_tests = [
     {"input": "1 2 3", "expected_output": "No Triangle"},
 ]
 
-error_cases = [
+error_handling = [
     {"input": "3", "expected_output": "Error: Two sides missing"},
     {"input": "3 4", "expected_output": "Error: One side missing"},
-    {"input": "3 a 4", "expected_output": "Error: Non-numeric value encountered"},
+    {"input": "3 a 4", "expected_output": "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."},
     {"input": "3 4 5 6", "expected_output": "Error: Too many sides provided"},
+    {"input": "hello", "expected_output": "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."},
+    {"input": "one one one", "expected_output": "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."},
 ]
 
 exit_cases = [
@@ -89,9 +91,9 @@ try:
     total_passed = 0
 
     for category, tests in [("Functional", functional_tests),
-                            ("Error", error_cases),
-                            ("Exit", exit_cases),
-                            ("Corner Case", corner_cases)]:
+                            ("Error Handling", error_handling),
+                            ("Exit Scenario", exit_cases),
+                            ("Corner Cases", corner_cases)]:
         cat_total, cat_passed = run_tests(tests, category)
         total_tests += cat_total
         total_passed += cat_passed
