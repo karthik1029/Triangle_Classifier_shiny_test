@@ -92,8 +92,14 @@ try:
 
     for category, tests in [("Functional", functional_tests),
                             ("Error Handling", error_handling),
-                            ("Exit Scenario", exit_cases),
-                            ("Corner Cases", corner_cases)]:
+                            ("Exit Scenario", exit_cases)]:
+        cat_total, cat_passed = run_tests(tests, category)
+        total_tests += cat_total
+        total_passed += cat_passed
+
+    print("Minimum critical test cases have been completed, including the exit scenarios for the delivery. Handling Corner cases now")
+    print(f"################################################")
+    for category, tests in [("Corner Cases", corner_cases)]:
         cat_total, cat_passed = run_tests(tests, category)
         total_tests += cat_total
         total_passed += cat_passed
