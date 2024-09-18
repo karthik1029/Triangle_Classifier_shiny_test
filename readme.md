@@ -28,6 +28,8 @@ This project provides an interface for managing and visualizing data stored in a
    source venv/bin/activate
    pip install shiny
    pip install selenium
+   pip install yaml
+   pip install time
 
 ### Step 2:  Launch the Shiny App
    ```bash
