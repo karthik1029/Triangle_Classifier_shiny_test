@@ -62,7 +62,7 @@ def server(input, output, session):
         if any(word.startswith('-') and word[1:].isdigit() for word in words):
             return "Error: Triangles can't have negative sides"
 
-        # check for incorrect number of sides
+        # check for invalid sides
         if len(words) != 3:
             if len(words) == 2:
                 return "Error: One side missing"

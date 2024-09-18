@@ -1,0 +1,39 @@
+functional_tests:
+  - input: "3 3 3"
+    expected_output: "Equilateral"
+  - input: "5 5 3"
+    expected_output: "Isosceles"
+  - input: "3 4 5"
+    expected_output: "Scalene"
+  - input: "1 2 3"
+    expected_output: "No Triangle"
+
+error_handling:
+  - input: "3"
+    expected_output: "Error: Two sides missing"
+  - input: "3 4"
+    expected_output: "Error: One side missing"
+  - input: "3 a 4"
+    expected_output: "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."
+  - input: "3 4 5 6"
+    expected_output: "Error: Too many sides provided"
+  - input: "hello"
+    expected_output: "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."
+  - input: "one one one"
+    expected_output: "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."
+
+exit_cases:
+  - input: "Exit"
+    expected_output: "Application has exited."
+  - input: "Quit"
+    expected_output: "Application has exited."
+
+corner_cases:
+  - input: "0 0 0"
+    expected_output: "No Triangle"
+  - input: "-1 -2 -3"
+    expected_output: "Error: Triangles can't have negative sides"
+  - input: "-1"
+    expected_output: "Error: Triangles can't have negative sides"
+  - input: "-1 -1"
+    expected_output: "Error: Triangles can't have negative sides"

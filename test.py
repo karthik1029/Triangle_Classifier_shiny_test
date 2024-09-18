@@ -4,35 +4,11 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import yaml
+import time
 
-# test case
-functional_tests = [
-    {"input": "3 3 3", "expected_output": "Equilateral"},
-    {"input": "5 5 3", "expected_output": "Isosceles"},
-    {"input": "3 4 5", "expected_output": "Scalene"},
-    {"input": "1 2 3", "expected_output": "No Triangle"},
-]
-
-error_handling = [
-    {"input": "3", "expected_output": "Error: Two sides missing"},
-    {"input": "3 4", "expected_output": "Error: One side missing"},
-    {"input": "3 a 4", "expected_output": "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."},
-    {"input": "3 4 5 6", "expected_output": "Error: Too many sides provided"},
-    {"input": "hello", "expected_output": "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."},
-    {"input": "one one one", "expected_output": "Error: Invalid input. Only numbers and the commands 'Quit' or 'Exit' are acceptable."},
-]
-
-exit_cases = [
-    {"input": "Exit", "expected_output": "Application has exited."},
-    {"input": "Quit", "expected_output": "Application has exited."},
-]
-
-corner_cases = [
-    {"input": "0 0 0", "expected_output": "No Triangle"},
-    {"input": "-1 -2 -3", "expected_output": "Error: Triangles can't have negative sides"},
-    {"input": "-1", "expected_output": "Error: Triangles can't have negative sides"},
-    {"input": "-1 -1", "expected_output": "Error: Triangles can't have negative sides"},
-]
+with open("test_cases.yaml", "r")as file:
+    test_case = yaml.safe_load(file)
 
 # path to chromedriver
 #downlad from https://googlechromelabs.github.io/chrome-for-testing/#stable
@@ -51,8 +27,10 @@ def run_tests(test_cases, category_name):
         input_field.send_keys(case["input"])
         input_field.send_keys(Keys.RETURN)
 
+        start_time = time.time()
+
         try:
-            WebDriverWait(driver, 0.5).until(
+            WebDriverWait(driver, 0.01).until(
                 EC.text_to_be_present_in_element((By.XPATH, "//pre[@id='result']"), case["expected_output"])
             )
             result_output = driver.find_element(By.XPATH, "//pre[@id='result']").text
@@ -61,12 +39,16 @@ def run_tests(test_cases, category_name):
 
         if result_output != case["expected_output"]:
             try:
-                WebDriverWait(driver, 0.5).until(
+                WebDriverWait(driver, 0.01).until(
                     EC.text_to_be_present_in_element((By.XPATH, "//pre[@id='error']"), case["expected_output"])
                 )
                 result_output = driver.find_element(By.XPATH, "//pre[@id='error']").text
             except:
                 result_output = ""
+
+        end_time = time.time()
+        response_time = end_time - start_time
+        print(f"Response time for input {case['input']}: {response_time:.4f} seconds\n")
 
         if result_output == case["expected_output"]:
             passed_tests += 1
@@ -90,19 +72,11 @@ try:
     total_tests = 0
     total_passed = 0
 
-    for category, tests in [("Functional", functional_tests),
-                            ("Error Handling", error_handling),
-                            ("Exit Scenario", exit_cases)]:
+    for category, tests in test_case.items():
         cat_total, cat_passed = run_tests(tests, category)
         total_tests += cat_total
         total_passed += cat_passed
 
-    print("Minimum critical test cases have been completed, including the exit scenarios for the delivery. Handling Corner cases now")
-    print(f"################################################")
-    for category, tests in [("Corner Cases", corner_cases)]:
-        cat_total, cat_passed = run_tests(tests, category)
-        total_tests += cat_total
-        total_passed += cat_passed
 
     # pass ratio
     overall_pass_ratio = total_passed / total_tests * 100
